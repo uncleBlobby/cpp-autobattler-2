@@ -4,22 +4,31 @@
 #include "actor.h"
 #include "base.h"
 
+class Game;
+class Player;
+
 class Enemy : public Actor {
 
   protected:
     float shootCooldown = 2.0f;
     float timeSinceLastShot = 0.0f;
+    Game &game;
+    Player &player;
 
   public:
-    Enemy(rl::Vector2 pos, rl::Vector2 dir) : Actor(pos, dir) {};
+    Enemy(rl::Vector2 pos, rl::Vector2 dir, Player &p, Game &g);
 
-    void Update(float dt) override {};
+    void Update(float dt) override;
 
     void Draw() const override;
 
-    void Shoot() {};
+    void Shoot();
 
-    // rl::Vector2 GetDirectionToPlayer();
+    rl::Vector2 GetDirectionToPlayer();
+
+    void SetPlayerRef(Player &p);
+
+    // Player *findPlayer(Game &game);
 };
 
 #endif
