@@ -23,21 +23,17 @@ Game::Game() {
 
 void Game::Update(float dt) {
 
-    // std::cout << "game.entities.size(): " << entities.size() << std::endl;
-    std::cout << "capacity=" << entities.capacity()
-              << " size=" << entities.size() << std::endl;
-
     for (auto &e : entities) {
-        if (auto player = dynamic_cast<Player *>(e.get())) {
-            player->Update(dt);
-        }
-        if (auto enemy = dynamic_cast<Enemy *>(e.get())) {
-            enemy->Update(dt);
-        }
-        if (auto proj = dynamic_cast<Projectile *>(e.get())) {
-            proj->Update(dt);
-        }
-        // e->Update(dt);
+        // if (auto player = dynamic_cast<Player *>(e.get())) {
+        //     player->Update(dt);
+        // }
+        // if (auto enemy = dynamic_cast<Enemy *>(e.get())) {
+        //     enemy->Update(dt);
+        // }
+        // if (auto proj = dynamic_cast<Projectile *>(e.get())) {
+        //     proj->Update(dt);
+        // }
+        e->Update(dt);
     }
 
     entities.erase(std::remove_if(entities.begin(), entities.end(),
@@ -53,16 +49,16 @@ void Game::Update(float dt) {
 
 void Game::Draw() const {
     for (const auto &e : entities) {
-        if (auto player = dynamic_cast<Player *>(e.get())) {
-            player->Draw();
-        }
-        if (auto enemy = dynamic_cast<Enemy *>(e.get())) {
-            enemy->Draw();
-        }
-        if (auto proj = dynamic_cast<Projectile *>(e.get())) {
-            proj->Draw();
-        }
-        // e->Draw();
+        // if (auto player = dynamic_cast<Player *>(e.get())) {
+        //     player->Draw();
+        // }
+        // if (auto enemy = dynamic_cast<Enemy *>(e.get())) {
+        //     enemy->Draw();
+        // }
+        // if (auto proj = dynamic_cast<Projectile *>(e.get())) {
+        //     proj->Draw();
+        // }
+        e->Draw();
     }
 
     rl::DrawText(std::format("FPS:\t\t\t{}", rl::GetFPS()).c_str(), 5, 5, 16,
