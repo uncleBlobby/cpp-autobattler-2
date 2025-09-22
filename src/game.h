@@ -11,6 +11,10 @@
 class Game {
   public:
     std::vector<std::unique_ptr<Entity>> entities;
+    Player *player;
+
+    float enemySpawnCooldown = 1.0f;
+    float timeSinceLastEnemySpawn = 0.0f;
 
     Game();
 
@@ -18,6 +22,8 @@ class Game {
     void Draw() const;
 
     Player &findPlayer();
+
+    void SpawnEnemy();
 
     friend class Enemy;
 };

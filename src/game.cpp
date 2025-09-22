@@ -1,6 +1,9 @@
 #include "game.h"
 
 Game::Game() {
+
+    srand(time(0));
+
     // Initialize empty entities array;
     entities = std::vector<std::unique_ptr<Entity>>{};
     // TODO:
@@ -11,10 +14,11 @@ Game::Game() {
     entities.push_back(
         std::make_unique<Player>(rl::Vector2{200, 200}, rl::Vector2{0, 0}));
 
-    Player &p = findPlayer();
+    // Player &p = findPlayer();
+    player = &findPlayer();
 
-    entities.push_back(std::make_unique<Enemy>(rl::Vector2{250, 250},
-                                               rl::Vector2{0, 0}, p, *this));
+    entities.push_back(std::make_unique<Enemy>(
+        rl::Vector2{250, 250}, rl::Vector2{0, 0}, *player, *this));
 };
 
 void Game::Update(float dt) {
@@ -35,6 +39,16 @@ void Game::Update(float dt) {
         }
         // e->Update(dt);
     }
+
+    entities.erase(std::remove_if(entities.begin(), entities.end(),
+                                  [](auto &e) { return e->isDead; }),
+                   entities.end());
+
+    timeSinceLastEnemySpawn += dt;
+    if (timeSinceLastEnemySpawn >= enemySpawnCooldown) {
+        SpawnEnemy();
+        timeSinceLastEnemySpawn = 0.0f;
+    }
 }
 
 void Game::Draw() const {
@@ -50,6 +64,22 @@ void Game::Draw() const {
         }
         // e->Draw();
     }
+
+    rl::DrawText(std::format("FPS:\t\t\t{}", rl::GetFPS()).c_str(), 5, 5, 16,
+                 rl::BLACK);
+    rl::DrawText(std::format("ENTITIES:\t{}", entities.size()).c_str(), 5,
+                 5 + 16, 16, rl::BLACK);
+    rl::DrawText(std::format("PLAYER_POS:\t{},{}", player->GetPosition().x,
+                             player->GetPosition().y)
+                     .c_str(),
+                 5, 5 + 32, 16, rl::BLACK);
+}
+
+void Game::SpawnEnemy() {
+    rl::Vector2 randomSpawnPoint = PositionJustOutsideScreen();
+    entities.push_back(std::make_unique<Enemy>(
+
+        randomSpawnPoint, rl::Vector2{0, 0}, *player, *this));
 }
 
 Player &Game::findPlayer() {

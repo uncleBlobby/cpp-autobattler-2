@@ -11,6 +11,11 @@ void Projectile::Update(float dt) {
     direction = Vector2Normalize(direction);
     position.x += (speed * direction.x) * dt;
     position.y += (speed * direction.y) * dt;
+
+    if (position.y < 0 || position.x < 0 || position.y > 1080 ||
+        position.x > 1920) {
+        isDead = true;
+    }
 }
 
 void Projectile::Draw() const {

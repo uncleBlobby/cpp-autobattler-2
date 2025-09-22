@@ -7,7 +7,7 @@
 
 Enemy::Enemy(rl::Vector2 pos, rl::Vector2 dir, Player &p, Game &g)
     : Actor(pos, dir), player(p), game(g) {
-    speed = 50.0f;
+    speed = 95.0f;
 };
 
 void Enemy::Update(float dt) {
