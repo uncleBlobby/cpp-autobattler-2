@@ -18,7 +18,7 @@ class Game {
 
     Player *player;
 
-    float enemySpawnCooldown = 1.0f;
+    float enemySpawnCooldown = 0.750f;
     float timeSinceLastEnemySpawn = 0.0f;
 
     Game();
