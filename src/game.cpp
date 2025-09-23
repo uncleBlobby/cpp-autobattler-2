@@ -9,7 +9,7 @@ Game::Game() {
     floatingTexts = std::vector<FloatingText>{};
     lootDrops = std::vector<Loot>{};
     // TODO:
-    // FIX THE ALLOCATIONS
+    // LAME HACK, FIX THE ALLOCATIONS
     entities.reserve(1000000);
 
     // Initialize player;
