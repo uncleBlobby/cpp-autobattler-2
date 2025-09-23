@@ -12,6 +12,7 @@ class Game {
   public:
     std::vector<std::unique_ptr<Entity>> entities;
     std::vector<FloatingText> floatingTexts;
+    std::vector<Loot> lootDrops;
 
     // std::vector<Enemy *> activeEnemiesThisFrame;
 

@@ -7,6 +7,7 @@ Game::Game() {
     // Initialize empty entities array;
     entities = std::vector<std::unique_ptr<Entity>>{};
     floatingTexts = std::vector<FloatingText>{};
+    lootDrops = std::vector<Loot>{};
     // TODO:
     // FIX THE ALLOCATIONS
     entities.reserve(1000000);
@@ -35,6 +36,18 @@ void Game::Update(float dt) {
         if (auto enemy = dynamic_cast<Enemy *>(e.get())) {
             activeEnemies.push_back(enemy);
             //     enemy->Update(dt);
+        }
+    }
+
+    for (auto &gem : lootDrops) {
+        if (!gem.collected) {
+
+            if (rl::CheckCollisionCircleRec(gem.position, gem.radius,
+                                            player->GetCollider())) {
+                gem.collected = true;
+                floatingTexts.push_back(
+                    CreateFloatingEXPText(player->GetPosition(), gem.xpValue));
+            }
         }
     }
 
@@ -76,6 +89,8 @@ void Game::Update(float dt) {
 
                         if (enemy->GetRemainingHP() <= 0) {
                             enemy->isDead = true;
+                            lootDrops.push_back(
+                                CreateLootExpItem(enemy->GetPosition()));
                         }
                     }
                 }
@@ -117,6 +132,11 @@ void Game::Update(float dt) {
                        [](const FloatingText &ft) { return ft.lifetime <= 0; }),
         floatingTexts.end());
 
+    lootDrops.erase(
+        std::remove_if(lootDrops.begin(), lootDrops.end(),
+                       [](const Loot &gem) { return gem.collected; }),
+        lootDrops.end());
+
     timeSinceLastEnemySpawn += dt;
     if (timeSinceLastEnemySpawn >= enemySpawnCooldown) {
         SpawnEnemy();
@@ -136,6 +156,12 @@ void Game::Draw() const {
         //     proj->Draw();
         // }
         e->Draw();
+    }
+
+    for (auto &gem : lootDrops) {
+        if (!gem.collected) {
+            rl::DrawCircleV(gem.position, gem.radius, gem.color);
+        }
     }
 
     // for (const auto &ft : floatingTexts) {

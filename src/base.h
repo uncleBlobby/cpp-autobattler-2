@@ -85,10 +85,10 @@ struct FloatingText {
 inline FloatingText CreateFloatingText(rl::Vector2 startPos, int damage) {
     FloatingText ft;
     // ft.position = rl::Vector2{startPos.x, startPos.y - 25};
-    ft.basePosition = startPos;
+    ft.basePosition = rl::Vector2{startPos.x, startPos.y - 25};
     ft.text = std::to_string(damage);
     ft.lifetime = ft.totalLifetime = 1.0f;
-    ft.startSize = 30.0f;
+    ft.startSize = 40.0f;
     ft.endSize = 10.0f;
     // ft.alpha = 1.0f;
     ft.color = rl::BLACK;
@@ -96,6 +96,38 @@ inline FloatingText CreateFloatingText(rl::Vector2 startPos, int damage) {
     return ft;
 }
 
+inline FloatingText CreateFloatingEXPText(rl::Vector2 startPos, int expAmount) {
+    FloatingText ft;
+    // ft.position = rl::Vector2{startPos.x, startPos.y - 25};
+    ft.basePosition = rl::Vector2{startPos.x, startPos.y - 25};
+    ft.text = "+";
+    ft.text += std::to_string(expAmount);
+    ft.text += "EXP";
+    ft.lifetime = ft.totalLifetime = 1.0f;
+    ft.startSize = 40.0f;
+    ft.endSize = 10.0f;
+    // ft.alpha = 1.0f;
+    ft.color = rl::GREEN;
+    ft.velocity = rl::Vector2{0, -40};
+    return ft;
+}
+
 inline float EaseOutQuad(float t) { return 1 - (1 - t) * (1 - t); }
+
+struct Loot {
+    rl::Vector2 position;
+    float radius;
+    int xpValue;
+    bool collected = false;
+    rl::Color color = rl::GREEN;
+};
+
+inline Loot CreateLootExpItem(rl::Vector2 spawnPos) {
+    Loot gem;
+    gem.position = spawnPos;
+    gem.radius = 8.0f;
+    gem.xpValue = 10;
+    return gem;
+}
 
 #endif

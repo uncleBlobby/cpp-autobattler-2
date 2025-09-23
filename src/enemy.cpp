@@ -8,7 +8,7 @@
 Enemy::Enemy(rl::Vector2 pos, rl::Vector2 dir, Player &p, Game &g)
     : Actor(pos, dir), player(p), game(g) {
     speed = 95.0f;
-    hitpoints = 50;
+    hitpoints = 25;
     collider = rl::Rectangle{pos.x, pos.y, size * 1.0f, size * 1.0f};
 };
 
