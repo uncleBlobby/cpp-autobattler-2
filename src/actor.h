@@ -9,6 +9,7 @@ class Actor : public GameObject {
     rl::Vector2 direction;
     float speed;
     int hitpoints;
+    rl::Rectangle collider;
 
   public:
     Actor() {};
@@ -20,6 +21,12 @@ class Actor : public GameObject {
     void Draw() const override {};
 
     rl::Vector2 GetPosition() { return position; }
+
+    rl::Rectangle GetCollider() { return collider; }
+
+    void TakeDamage(int amount) { hitpoints -= amount; }
+
+    int GetRemainingHP() { return hitpoints; }
 };
 
 #endif

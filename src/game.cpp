@@ -11,17 +11,31 @@ Game::Game() {
     entities.reserve(1000000);
 
     // Initialize player;
-    entities.push_back(
-        std::make_unique<Player>(rl::Vector2{200, 200}, rl::Vector2{0, 0}));
 
     // Player &p = findPlayer();
-    player = &findPlayer();
+    // player = &findPlayer();
 
-    entities.push_back(std::make_unique<Enemy>(
-        rl::Vector2{250, 250}, rl::Vector2{0, 0}, *player, *this));
+    // entities.push_back(std::make_unique<Enemy>(
+    //     rl::Vector2{250, 250}, rl::Vector2{0, 0}, *player, *this));
 };
 
+void Game::InitPlayer() {
+    entities.push_back(std::make_unique<Player>(rl::Vector2{200, 200},
+                                                rl::Vector2{0, 0}, *this));
+
+    player = &findPlayer();
+}
+
 void Game::Update(float dt) {
+
+    std::vector<Enemy *> activeEnemies = std::vector<Enemy *>{};
+
+    for (auto &e : entities) {
+        if (auto enemy = dynamic_cast<Enemy *>(e.get())) {
+            activeEnemies.push_back(enemy);
+            //     enemy->Update(dt);
+        }
+    }
 
     for (auto &e : entities) {
         // if (auto player = dynamic_cast<Player *>(e.get())) {
@@ -30,10 +44,42 @@ void Game::Update(float dt) {
         // if (auto enemy = dynamic_cast<Enemy *>(e.get())) {
         //     enemy->Update(dt);
         // }
-        // if (auto proj = dynamic_cast<Projectile *>(e.get())) {
-        //     proj->Update(dt);
-        // }
+
         e->Update(dt);
+
+        if (auto proj = dynamic_cast<Projectile *>(e.get())) {
+            // proj->Update(dt);
+            if (proj->owner == ProjectileOwnership::ENEMY) {
+                if (rl::CheckCollisionCircleRec(proj->GetPosition(),
+                                                proj->GetRadius(),
+                                                player->GetCollider())) {
+                    proj->isDead = true;
+                }
+            }
+
+            if (proj->owner == ProjectileOwnership::PLAYER) {
+
+                for (auto enemy : activeEnemies) {
+                    if (rl::CheckCollisionCircleRec(proj->GetPosition(),
+                                                    proj->GetRadius(),
+                                                    enemy->GetCollider())) {
+                        std::cout << "hit enemy" << std::endl;
+                        proj->isDead = true;
+                        enemy->TakeDamage(10);
+
+                        if (enemy->GetRemainingHP() <= 0) {
+                            enemy->isDead = true;
+                        }
+                    }
+                }
+                //     // loop through all enemies and check collisions
+                //     if (rl::CheckCollisionCircleRec(proj->GetPosition(),
+                //                                     proj->GetRadius(),
+                //                                     player->GetCollider())) {
+                //         proj->isDead = true;
+                //     }
+            }
+        }
     }
 
     entities.erase(std::remove_if(entities.begin(), entities.end(),
@@ -76,6 +122,17 @@ void Game::SpawnEnemy() {
     entities.push_back(std::make_unique<Enemy>(
 
         randomSpawnPoint, rl::Vector2{0, 0}, *player, *this));
+}
+
+std::vector<Enemy *> Game::GetEnemies() {
+    std::vector<Enemy *> enemies;
+    for (auto &e : entities) {
+        if (auto enemy = dynamic_cast<Enemy *>(e.get())) {
+            enemies.push_back(enemy);
+        }
+    }
+
+    return enemies;
 }
 
 Player &Game::findPlayer() {

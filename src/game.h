@@ -11,6 +11,9 @@
 class Game {
   public:
     std::vector<std::unique_ptr<Entity>> entities;
+
+    // std::vector<Enemy *> activeEnemiesThisFrame;
+
     Player *player;
 
     float enemySpawnCooldown = 1.0f;
@@ -21,9 +24,13 @@ class Game {
     void Update(float dt);
     void Draw() const;
 
+    void InitPlayer();
+
     Player &findPlayer();
 
     void SpawnEnemy();
+
+    std::vector<Enemy *> GetEnemies();
 
     friend class Enemy;
 };

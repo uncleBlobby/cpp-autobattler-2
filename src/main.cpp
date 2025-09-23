@@ -12,6 +12,8 @@ int main() {
 
     Game g = Game();
 
+    g.InitPlayer();
+
     while (!rl::WindowShouldClose()) {
         float dt = rl::GetFrameTime();
         rl::BeginDrawing();

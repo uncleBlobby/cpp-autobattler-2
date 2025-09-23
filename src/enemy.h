@@ -16,6 +16,9 @@ class Enemy : public Actor {
     Player &player;
 
   public:
+    rl::Vector2 center =
+        rl::Vector2{position.x + (size / 2), position.y + (size / 2)};
+    int size = 25;
     Enemy(rl::Vector2 pos, rl::Vector2 dir, Player &p, Game &g);
 
     void Update(float dt) override;

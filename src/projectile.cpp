@@ -2,9 +2,11 @@
 
 Projectile::Projectile() {};
 
-Projectile::Projectile(rl::Vector2 startPos, rl::Vector2 dir)
-    : GameObject(startPos), direction(dir) {
-    speed = 150.0f;
+Projectile::Projectile(rl::Vector2 startPos, rl::Vector2 dir,
+                       ProjectileOwnership po)
+    : GameObject(startPos), direction(dir), owner(po) {
+    speed = 300.0f;
+    radius = 3;
 }
 
 void Projectile::Update(float dt) {
@@ -19,5 +21,7 @@ void Projectile::Update(float dt) {
 }
 
 void Projectile::Draw() const {
-    rl::DrawCircle(position.x, position.y, 2, rl::BLACK);
+    rl::DrawCircle(position.x, position.y, 3, rl::BLACK);
 }
+
+float Projectile::GetRadius() const { return radius; }

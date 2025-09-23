@@ -8,9 +8,14 @@
 Enemy::Enemy(rl::Vector2 pos, rl::Vector2 dir, Player &p, Game &g)
     : Actor(pos, dir), player(p), game(g) {
     speed = 95.0f;
+    hitpoints = 50;
+    collider = rl::Rectangle{pos.x, pos.y, size * 1.0f, size * 1.0f};
 };
 
 void Enemy::Update(float dt) {
+
+    center = rl::Vector2{position.x + (size / 2), position.y + (size / 2)};
+    collider = rl::Rectangle{position.x, position.y, size * 1.0f, size * 1.0f};
 
     // move toward player
     direction = GetDirectionToPlayer();
@@ -30,12 +35,12 @@ void Enemy::Update(float dt) {
 };
 
 void Enemy::Draw() const {
-    rl::DrawRectangle(position.x, position.y, 10, 10, rl::RED);
+    rl::DrawRectangle(position.x, position.y, size, size, rl::RED);
 };
 
 void Enemy::Shoot() {
-    game.entities.push_back(
-        std::make_unique<Projectile>(position, GetDirectionToPlayer()));
+    game.entities.push_back(std::make_unique<Projectile>(
+        center, GetDirectionToPlayer(), ProjectileOwnership::ENEMY));
 };
 
 rl::Vector2 Enemy::GetDirectionToPlayer() {
@@ -43,7 +48,7 @@ rl::Vector2 Enemy::GetDirectionToPlayer() {
     return dir;
 };
 
-void Enemy::SetPlayerRef(Player &p) { player = p; }
+// void Enemy::SetPlayerRef(Player &p) { player = p; }
 
 // Player *Enemy::findPlayer(Game &game) {
 //     for (const auto &e : game.entities) {
