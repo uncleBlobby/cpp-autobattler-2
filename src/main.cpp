@@ -20,8 +20,9 @@ int main() {
 
         rl::ClearBackground(rl::RAYWHITE);
 
-        g.Update(dt);
         g.Draw();
+
+        g.Update(dt);
 
         rl::EndDrawing();
     }

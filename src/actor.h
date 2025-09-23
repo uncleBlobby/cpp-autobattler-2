@@ -12,6 +12,7 @@ class Actor : public GameObject {
     rl::Rectangle collider;
 
   public:
+    // float timeSinceHit;
     Actor() {};
     Actor(rl::Vector2 pos, rl::Vector2 dir)
         : GameObject(pos), direction(dir) {};
@@ -21,6 +22,8 @@ class Actor : public GameObject {
     void Draw() const override {};
 
     rl::Vector2 GetPosition() { return position; }
+
+    const rl::Vector2 &GetPositionRef() const { return position; }
 
     rl::Rectangle GetCollider() { return collider; }
 

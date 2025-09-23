@@ -6,10 +6,11 @@
 
 class GameObject : public Entity {
   protected:
-    rl::Vector2 position;
+    
     // rl::Texture2D texture;
 
   public:
+    rl::Vector2 position;
     GameObject() {};
     GameObject(rl::Vector2 pos) : position(pos) {};
 
