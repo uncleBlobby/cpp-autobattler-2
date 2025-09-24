@@ -49,20 +49,21 @@ inline rl::Vector2 PositionJustOutsideScreen() {
 
     int random_number = 0 + (rand() % (perim - 0 + 1));
 
-    // bottom side
-    if (0 < random_number < (width)) {
+    if (random_number > 0 && random_number < width) {
         return rl::Vector2{float(width - random_number), height};
     }
 
-    if (width < random_number < (width + height)) {
+    if (random_number > width && random_number < (width + height)) {
         return rl::Vector2{0, float(random_number - width)};
     }
 
-    if ((width + height) < random_number < (2 * width + height)) {
+    if (random_number > (width + height) &&
+        random_number < (2 * width + height)) {
         return rl::Vector2{float(random_number - (width + height)), 0};
     }
 
-    if ((2 * width + height) < random_number < (2 * width + 2 * height)) {
+    if (random_number > (2 * width + height) &&
+        random_number < (2 * width + 2 * height)) {
         return rl::Vector2{
             float(width),
             float(height - (random_number - (2 * width + height)))};
