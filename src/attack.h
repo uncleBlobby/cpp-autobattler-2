@@ -5,50 +5,56 @@
 #include "gameobject.h"
 #include "projectile.h"
 
-class ProjectileAttack {
+class TargetedProjectileAttack {
   public:
     int projectileCount;
-    int projectileBaseDamage;
-    int projectileRadius;
-
-    // replace below with array of Projectile class...
-
+    // int projectileBaseDamage;
     std::vector<Projectile> projectiles;
-
-    // std::vector<rl::Vector2> projectileDirections;
-    // std::vector<rl::Vector2> projectilePositions;
     float coolDownTime;
-    float velocity;
+    float velocity; // ? already exists on projectile class -- do we need a
+                    // modifier for the whole attack?
     rl::Vector2 startPosition;
-    GameObject &target;
+    GameObject *target;
     ProjectileOwnership po;
     // rl::Color projectileColor;
 
     // Standard single projectile targeted attack
-    ProjectileAttack(GameObject &targ, rl::Vector2 startPos,
-                     ProjectileOwnership po)
+    TargetedProjectileAttack(GameObject *targ, rl::Vector2 startPos,
+                             ProjectileOwnership po)
         : target(targ) {
         projectileCount = 1;
-        projectileBaseDamage = 5;
-        projectileRadius = 5;
         velocity = 200.0f;
         startPosition = startPos;
 
         projectiles = std::vector<Projectile>{};
 
-        for (size_t i = 0; i < projectileCount; i++) {
+        for (int i = 0; i < projectileCount; i++) {
             projectiles.push_back(Projectile(
                 startPosition,
-                GetDirectionToTarget(target.GetPosition(), startPos), po));
+                GetDirectionToTarget(target->GetPosition(), startPos), po));
         }
-
-        // projectileDirections = std::vector<rl::Vector2>{};
         coolDownTime = 2.0f;
-        // projectileDirections.push_back(
-        //     GetDirectionToTarget(target.GetPosition(), startPos));
-        // projectilePositions.push_back(startPos);
-        // projectileColor = rl::BLACK;
     };
+
+    TargetedProjectileAttack(GameObject *targ, rl::Vector2 startPos,
+                             std::vector<rl::Vector2> targetArray,
+                             ProjectileOwnership po) {
+        if (target == nullptr) {
+            projectileCount = targetArray.size();
+            velocity = 200.0f;
+            startPosition = startPos;
+
+            projectiles = std::vector<Projectile>{};
+
+            for (int i = 0; i < projectileCount; i++) {
+                projectiles.push_back(Projectile(
+                    startPosition,
+                    GetDirectionToTarget(targetArray.at(i), startPos), po));
+            }
+
+            coolDownTime = 2.0f;
+        }
+    }
 
     void Update(float dt) {
 

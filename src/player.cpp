@@ -1,4 +1,5 @@
 #include "player.h"
+#include "attack.h"
 
 Player::Player(Game &g) : game(g) {};
 
@@ -44,12 +45,27 @@ void Player::Draw() const {
 };
 
 void Player::Shoot() {
-    game.entities.push_back(std::make_unique<Projectile>(
-        center, rl::Vector2{-1, 0}, ProjectileOwnership::PLAYER));
-    game.entities.push_back(std::make_unique<Projectile>(
-        center, rl::Vector2{1, 0}, ProjectileOwnership::PLAYER));
-    game.entities.push_back(std::make_unique<Projectile>(
-        center, rl::Vector2{0, -1}, ProjectileOwnership::PLAYER));
-    game.entities.push_back(std::make_unique<Projectile>(
-        center, rl::Vector2{0, 1}, ProjectileOwnership::PLAYER));
+
+    std::vector<rl::Vector2> targets = {};
+    targets.push_back(rl::Vector2{-1, 0});
+    targets.push_back(rl::Vector2{1, 0});
+    targets.push_back(rl::Vector2{0, -1});
+    targets.push_back(rl::Vector2{0, 1});
+
+    TargetedProjectileAttack tpa = TargetedProjectileAttack(
+        nullptr, position, targets, ProjectileOwnership::PLAYER);
+
+    for (int i = 0; i < tpa.projectileCount; i++) {
+        game.entities.push_back(
+            std::make_unique<Projectile>(tpa.projectiles[i]));
+    }
+
+    // game.entities.push_back(std::make_unique<Projectile>(
+    //     center, rl::Vector2{-1, 0}, ProjectileOwnership::PLAYER));
+    // game.entities.push_back(std::make_unique<Projectile>(
+    //     center, rl::Vector2{1, 0}, ProjectileOwnership::PLAYER));
+    // game.entities.push_back(std::make_unique<Projectile>(
+    //     center, rl::Vector2{0, -1}, ProjectileOwnership::PLAYER));
+    // game.entities.push_back(std::make_unique<Projectile>(
+    //     center, rl::Vector2{0, 1}, ProjectileOwnership::PLAYER));
 };
