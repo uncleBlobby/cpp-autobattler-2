@@ -17,7 +17,7 @@ class Actor : public GameObject {
     Actor(rl::Vector2 pos, rl::Vector2 dir)
         : GameObject(pos), direction(dir) {};
 
-    void Update(float dt) override {};
+    void Update(__attribute__((unused)) float dt) override {};
 
     void Draw() const override {};
 

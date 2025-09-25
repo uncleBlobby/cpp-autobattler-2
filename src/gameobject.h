@@ -6,7 +6,6 @@
 
 class GameObject : public Entity {
   protected:
-    
     // rl::Texture2D texture;
 
   public:
@@ -16,7 +15,7 @@ class GameObject : public Entity {
 
     rl::Vector2 GetPosition() { return position; }
 
-    void Update(float dt) override {}
+    void Update(__attribute__((unused)) float dt) override {}
 
     void Draw() const override {}
 };

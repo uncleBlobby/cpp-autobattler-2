@@ -204,4 +204,6 @@ Player &Game::findPlayer() {
             return *player;
         }
     }
+
+    throw std::runtime_error("player not found!");
 }

@@ -68,6 +68,8 @@ inline rl::Vector2 PositionJustOutsideScreen() {
             float(width),
             float(height - (random_number - (2 * width + height)))};
     }
+
+    return rl::Vector2{-1, -1};
 }
 
 struct FloatingText {
