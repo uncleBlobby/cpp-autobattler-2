@@ -19,14 +19,14 @@ extern "C" {
 //     return dir;
 // };
 
-inline rl::Vector2 GetDirectionToTarget(rl::Vector2 target, rl::Vector2 start) {
-    rl::Vector2 dir = Vector2Sub(target, start);
-    return dir;
-}
-
 inline rl::Vector2 Vector2Sub(rl::Vector2 v1, rl::Vector2 v2) {
     rl::Vector2 result = rl::Vector2{v1.x - v2.x, v1.y - v2.y};
     return result;
+}
+
+inline rl::Vector2 GetDirectionToTarget(rl::Vector2 target, rl::Vector2 start) {
+    rl::Vector2 dir = Vector2Sub(target, start);
+    return dir;
 }
 
 inline rl::Vector2 Vector2Add(rl::Vector2 v1, rl::Vector2 v2) {
